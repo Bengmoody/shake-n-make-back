@@ -1,4 +1,4 @@
-const { getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
+const { getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
 const { bodyTypeChecker, avatarChecker, usernameChecker, convertCocktail, cocktailBodyTypeChecker } = require("./utils")
 const selectUsers = (req, res, next) => {
     getUsers()
@@ -60,4 +60,13 @@ const selectUserByUsername = (req, res, next) => {
     })
 }
 
-module.exports = { selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
+const selectCocktailsByUserId = (req, res, next) => {
+    const { user_id } = req.params
+    getCocktailsByUserId(user_id).then((cocktails) =>{
+        res.status(200).send({cocktails})
+    }).catch((err) => {
+        next(err)
+    })
+}
+
+module.exports = { selectCocktailsByUserId,  selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
