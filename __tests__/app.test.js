@@ -959,4 +959,31 @@ describe('POST /api/cocktails', () => {
     })
 })
 
+describe('GET /api/users/:username', () => {
+    test('valid username receive 200 and show user object', () => {
+        return request(app)
+            .get('/api/users/testuser1')
+            .expect(200)
+            .then(({ body: { user } }) => {
+                expect(user).toEqual({
+                    "user_id": 1,
+                    "username": "testuser1",
+                    "password": "pass123",
+                    "avatar": 'https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953',
+                    "over18": true
+                }
+                )
+
+            })
+    })
+    test('testuser7 not found, return 404 error', () => {
+        return request(app)
+            .get('/api/users/testuser7')
+            .expect(404)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("username not found in database")
+
+            })
+    })
+})
 

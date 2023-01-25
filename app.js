@@ -1,6 +1,6 @@
 const express=require('express')
 const db = require('./db/index')
-const {selectUsers,selectCocktails,addUser,addCocktail} = require('./controllers')
+const {selectUsers,selectCocktails,addUser,addCocktail, selectUserByUsername} = require('./controllers')
 const app=express();
 
 app.use(express.json())
@@ -9,6 +9,7 @@ app.get('/api/users',selectUsers)
 app.get('/api/cocktails',selectCocktails)
 app.post('/api/users',addUser)
 app.post('/api/users/:user_id/cocktails',addCocktail)
+app.get('/api/users/:username',selectUserByUsername)
 
 app.use((err,req,res,next) => {
     if (err.msg !== undefined) {
