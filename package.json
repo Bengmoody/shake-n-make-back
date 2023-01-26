@@ -2,7 +2,7 @@
   "name": "shake-n-make",
   "version": "1.0.0",
   "description": "back-end for cocktail app",
-  "main": "index.js",
+  "main": "listen.js",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -12,11 +12,15 @@
   "scripts": {
     "setup-dbs": "psql -f db/seed/setup.sql",
     "seed": "npm run setup-dbs && node ./db/seed/run-seed.js",
-    "test": "npm run setup-dbs && jest"
+    "test": "npm run setup-dbs && jest",
+    "start": "node listen.js",
+    "seed-prod": "NODE_ENV=production npm run seed",
+    "dev": "NODE_ENV=dev npm run seed && nodemon listen.js"
   },
   "devDependencies": {
     "jest": "^29.4.0",
     "jest-sorted": "^1.0.14",
+    "nodemon": "^2.0.20",
     "supertest": "^6.3.3"
   }
 }

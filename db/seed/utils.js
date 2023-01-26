@@ -1,6 +1,3 @@
-let rawUserData = require('../data/test-data/users.js')
-let rawCocktailData = require('../data/test-data/cocktails.js')
-
 function convertCocktails(rawCocktailData) {
     let reformattedCocktails = rawCocktailData.map((cocktail) => {
         
@@ -14,9 +11,6 @@ function convertUsers(rawUserData) {
     })
     return reformattedUsers
 }
-
-
-let processedCocktails = convertCocktails(rawCocktailData)
 
 module.exports.convertCocktails = convertCocktails;
 module.exports.convertUsers = convertUsers;

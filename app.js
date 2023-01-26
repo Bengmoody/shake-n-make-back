@@ -14,8 +14,7 @@ app.get('/api/users/u/:username',selectUserByUsername)
 app.get('/api/users/:user_id/cocktails',selectCocktailsByUserId)
 app.delete('/api/cocktails/:cocktail_id', removeCocktailByCocktailId)
 app.patch('/api/users/i/:user_id', updateUserByUserId)
-app.get('/',fetchJson)
-
+app.get('/api',fetchJson)
 
 
 app.use((err,req,res,next) => {

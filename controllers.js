@@ -1,6 +1,6 @@
 const { patchUserByUserId,deleteCocktailByCocktailId, getUserByUserId, getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
 const { patchBodyChecker,bodyTypeChecker, avatarChecker, usernameChecker, convertCocktail, cocktailBodyTypeChecker } = require("./utils")
-
+const fs = require('fs/promises')
 
 const selectUsers = (req, res, next) => {
     getUsers()
@@ -127,6 +127,7 @@ const updateUserByUserId = (req,res,next) => {
 const fetchJson = (req,res,next) => {
     fs.readFile(`${__dirname}/endpoints.json`,"utf-8")
     .then((data) => {
+        console.log(data)
         let endpoints = JSON.parse(data)
         res.status(200).send({endpoints})
     })
