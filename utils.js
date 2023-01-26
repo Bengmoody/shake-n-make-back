@@ -99,4 +99,29 @@ exports.cocktailBodyTypeChecker = (cocktail) => {
     return Promise.all(promiseArr)
 }
 
+exports.patchBodyChecker = (body,typeObject) => {
+    const patchBodyCheckPromise = new Promise((resolve, reject) => {
+        // check for types before passing to SQL
+        // this is to avoid type coercion, e.g. number being accepted as body by database
+        const rejectObject = { status: 0, msg: "" }
+        let changeFlag = false;
+        for (let property in body) {
+            if (typeof body[property] !== typeObject[property]) {
+                // status 400 as bad request, wrong datatype of property
+                // protects data integrity of database
+                rejectObject.status = 400
+                rejectObject.msg += property + " is not in correct format"
+                changeFlag = true;
+            }
+        }
+        if (changeFlag) {
+            reject(rejectObject)
+        } else {
+            resolve("success")
+        }
+    })
+    return patchBodyCheckPromise;
+
+}
+
 

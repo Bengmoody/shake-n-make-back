@@ -1,5 +1,5 @@
-const { deleteCocktailByCocktailId, getUserByUserId, getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
-const { bodyTypeChecker, avatarChecker, usernameChecker, convertCocktail, cocktailBodyTypeChecker } = require("./utils")
+const { patchUserByUserId,deleteCocktailByCocktailId, getUserByUserId, getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
+const { patchBodyChecker,bodyTypeChecker, avatarChecker, usernameChecker, convertCocktail, cocktailBodyTypeChecker } = require("./utils")
 
 
 const selectUsers = (req, res, next) => {
@@ -101,4 +101,40 @@ const removeCocktailByCocktailId = (req, res, next) => {
 
 }
 
-module.exports = { removeCocktailByCocktailId, selectUserbyUserId, selectCocktailsByUserId, selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
+const updateUserByUserId = (req,res,next) => {
+    const { user_id } = req.params
+    const typeObject = {password: "string",avatar:"string",over18:"boolean"}
+    patchBodyChecker(req.body,typeObject)
+    .then((res) => {
+        if (req.body.avatar) {
+            return avatarChecker(req.body.avatar)
+        } else {
+            return Promise.resolve("success")
+        }
+    })
+    .then((res) => {
+        return patchUserByUserId(req.body,user_id)
+    })
+    .then((user) => {
+        res.status(202).send({user})
+    })
+    .catch((err) => {
+        err.propName = "user_id"
+        next(err)
+    })
+}
+
+const fetchJson = (req,res,next) => {
+    fs.readFile(`${__dirname}/endpoints.json`,"utf-8")
+    .then((data) => {
+        let endpoints = JSON.parse(data)
+        res.status(200).send({endpoints})
+    })
+    .catch((err) => {
+        err.status = 404;
+        err.msg = "endpoints.json file not found in main directory";
+        next(err)
+    })
+}
+
+module.exports = { fetchJson, updateUserByUserId,removeCocktailByCocktailId, selectUserbyUserId, selectCocktailsByUserId, selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }

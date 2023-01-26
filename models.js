@@ -80,4 +80,29 @@ exports.deleteCocktailByCocktailId = (cocktail_id) => {
 
 }
 
+exports.patchUserByUserId = (body, user_id) => {
+    let { password, avatar, over18 } = body
+    let inputArr = []
+
+    let sql = `UPDATE users SET `
+    let count = 1;
+    for (let x in body) {
+        if (body[x] !== undefined) {
+            sql += `${x} = $${count}, `
+            count += 1
+            inputArr.push(body[x])
+        }
+    }
+    sql = sql.slice(0, -2)
+    sql += ` WHERE user_id = $${count} RETURNING *;`
+    inputArr.push(user_id)
+    return db.query(sql, inputArr)
+        .then(({ rows }) => {
+            if (rows.length === 0) {
+                return Promise.reject({ status: 404, msg: "user_id not found in database" })
+            } else {
+                return rows[0];
+            }
+        })
+}
 

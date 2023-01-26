@@ -1,0 +1,390 @@
+{
+    "GET /api": {
+        "description": "serves up a json representation of all the available endpoints of the api"
+    },
+    "GET /api/users": {
+        "description": "serves an array of all existing user objects",
+        "queries": [],
+        "exampleResponse": {
+            "users": [
+                {
+                    "user_id": 1,
+                    "password": "secretpassword1",
+                    "avatar": "https://www.google.co.uk/image1jpg",
+                    "over18": true
+                },
+                {
+                    "user_id": 2,
+                    "password": "cheesychips",
+                    "avatar": "https://www.google.co.uk/image2.jpg",
+                    "over18": false
+                }
+            ]
+        }
+    },
+    "GET /api/cocktails": {
+        "description": "serves an array of all existing cocktail objects",
+        "queries": [],
+        "exampleResponse": {
+            "cocktails": [
+                {
+                    "cocktail_id": 23,
+                    "title": "Alexander",
+                    "category": "Ordinary Drink",
+                    "alcoholic": true,
+                    "glass": "Cocktail glass",
+                    "instructions": "Shake all ingredients with ice and strain contents into a cocktail glass. Sprinkle nutmeg on top and serve.",
+                    "thumbnail": "https://www.thecocktaildb.com/images/media/drink/0clus51606772388.jpg",
+                    "ingredient1": "Gin",
+                    "ingredient2": "Creme de Cacao",
+                    "ingredient3": "Light cream",
+                    "ingredient4": "Nutmeg",
+                    "ingredient5": null,
+                    "ingredient6": null,
+                    "ingredient7": null,
+                    "ingredient8": null,
+                    "ingredient9": null,
+                    "ingredient10": null,
+                    "ingredient11": null,
+                    "ingredient12": null,
+                    "ingredient13": null,
+                    "ingredient14": null,
+                    "ingredient15": null,
+                    "measure1": "1/2 oz ",
+                    "measure2": "1/2 oz white ",
+                    "measure3": "2 oz ",
+                    "measure4": null,
+                    "measure5": null,
+                    "measure6": null,
+                    "measure7": null,
+                    "measure8": null,
+                    "measure9": null,
+                    "measure10": null,
+                    "measure11": null,
+                    "measure12": null,
+                    "measure13": null,
+                    "measure14": null,
+                    "measure15": null,
+                    "created_at": "2023-01-26T14:35:28.110Z",
+                    "linked_user_id": 3
+                },
+                {
+                    "cocktail_id": 24,
+                    "title": "Algonquin",
+                    "category": "Ordinary Drink",
+                    "alcoholic": true,
+                    "glass": "Cocktail glass",
+                    "instructions": "Combine and shake all ingredients with ice, strain contents into a cocktail glass, and serve.",
+                    "thumbnail": "https://www.thecocktaildb.com/images/media/drink/uwryxx1483387873.jpg",
+                    "ingredient1": "Blended whiskey",
+                    "ingredient2": "Dry Vermouth",
+                    "ingredient3": "Pineapple juice",
+                    "ingredient4": null,
+                    "ingredient5": null,
+                    "ingredient6": null,
+                    "ingredient7": null,
+                    "ingredient8": null,
+                    "ingredient9": null,
+                    "ingredient10": null,
+                    "ingredient11": null,
+                    "ingredient12": null,
+                    "ingredient13": null,
+                    "ingredient14": null,
+                    "ingredient15": null,
+                    "measure1": "1 1/2 oz ",
+                    "measure2": "1 oz ",
+                    "measure3": "1 oz ",
+                    "measure4": null,
+                    "measure5": null,
+                    "measure6": null,
+                    "measure7": null,
+                    "measure8": null,
+                    "measure9": null,
+                    "measure10": null,
+                    "measure11": null,
+                    "measure12": null,
+                    "measure13": null,
+                    "measure14": null,
+                    "measure15": null,
+                    "created_at": "2023-01-26T14:35:28.110Z",
+                    "linked_user_id": 2
+                }
+            ]
+        }
+    },
+    "POST /api/users": {
+        "description": "takes a user object with username, password, avatar (optional) and over18 and returns successfully posted object",
+        "queries": [],
+        "queryDetails": {},
+        "exampleInputObject": {
+            "username": "bob2k23",
+            "password": "myPasswordIsStrong",
+            "avatar": "http://www.google.co.uk/image1jpg",
+            "over18": true
+        },
+        "exampleResponse": {
+            "user": {
+                "user_id": 5,
+                "username": "bob2k23",
+                "password": "myPasswordIsStrong",
+                "avatar": "http://www.google.co.uk/image1jpg",
+                "over18": true
+            }
+        }
+    },
+    "GET /api/users/i/:user_id": {
+        "description": "serves an object with the details for the user matching the user_id specified in the parametric endpoint",
+        "queries": [],
+        "exampleUrlInput": "/api/users/i/2",
+        "parameters": ":user_id - must be a number in the URL, e.g. 2",
+        "exampleResponse": {
+            "user": [
+                {
+                    "user_id": 2,
+                    "username": "dav3rid",
+                    "password": "myPassw0rd",
+                    "avatar": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+                    "over18": true
+                }
+            ]
+        }
+    },
+    "POST /api/users/:user_id/cocktails": {
+        "description": "allows the user to post a valid cocktail object (in cocktailDB API format) to the cocktails associated with the user_id in the parametric endpoint.  Returns the posted cocktail object.",
+        "queries": [],
+        "parameters": ":user_id - must be a number in the URL, e.g. 2",
+        "example URL input": "/api/users/2/cocktails",
+        "exampleInputObject": {
+            "idDrink": "11020",
+            "strDrink": "Algonquin",
+            "strDrinkAlternate": null,
+            "strTags": null,
+            "strVideo": null,
+            "strCategory": "Ordinary Drink",
+            "strIBA": null,
+            "strAlcoholic": "Alcoholic",
+            "strGlass": "Cocktail glass",
+            "strInstructions": "Combine and shake all ingredients with ice, strain contents into a cocktail glass, and serve.",
+            "strInstructionsES": "Mezclar y agitar todos los ingredientes con hielo, colarlos en un vaso de cóctel y servir.",
+            "strInstructionsDE": "Alle Zutaten mit Eis mischen und schütteln, Inhalt in ein Cocktailglas abseihen und servieren.",
+            "strInstructionsFR": null,
+            "strInstructionsIT": "Unire e scuotere tutti gli ingredienti con ghiaccio, filtrare il contenuto in una coppetta da cocktail e servire.",
+            "strInstructionsZH-HANS": null,
+            "strInstructionsZH-HANT": null,
+            "strDrinkThumb": "https:\/\/www.thecocktaildb.com\/images\/media\/drink\/uwryxx1483387873.jpg",
+            "strIngredient1": "Blended whiskey",
+            "strIngredient2": "Dry Vermouth",
+            "strIngredient3": "Pineapple juice",
+            "strIngredient4": null,
+            "strIngredient5": null,
+            "strIngredient6": null,
+            "strIngredient7": null,
+            "strIngredient8": null,
+            "strIngredient9": null,
+            "strIngredient10": null,
+            "strIngredient11": null,
+            "strIngredient12": null,
+            "strIngredient13": null,
+            "strIngredient14": null,
+            "strIngredient15": null,
+            "strMeasure1": "1 1\/2 oz ",
+            "strMeasure2": "1 oz ",
+            "strMeasure3": "1 oz ",
+            "strMeasure4": null,
+            "strMeasure5": null,
+            "strMeasure6": null,
+            "strMeasure7": null,
+            "strMeasure8": null,
+            "strMeasure9": null,
+            "strMeasure10": null,
+            "strMeasure11": null,
+            "strMeasure12": null,
+            "strMeasure13": null,
+            "strMeasure14": null,
+            "strMeasure15": null,
+            "strImageSource": null,
+            "strImageAttribution": null,
+            "strCreativeCommonsConfirmed": "No",
+            "dateModified": "2017-01-02 20:11:13"
+        },
+        "exampleResponse": {
+            "cocktail": {
+                "cocktail_id": 24,
+                "title": "Algonquin",
+                "category": "Ordinary Drink",
+                "alcoholic": true,
+                "glass": "Cocktail glass",
+                "instructions": "Combine and shake all ingredients with ice, strain contents into a cocktail glass, and serve.",
+                "thumbnail": "https://www.thecocktaildb.com/images/media/drink/uwryxx1483387873.jpg",
+                "ingredient1": "Blended whiskey",
+                "ingredient2": "Dry Vermouth",
+                "ingredient3": "Pineapple juice",
+                "ingredient4": null,
+                "ingredient5": null,
+                "ingredient6": null,
+                "ingredient7": null,
+                "ingredient8": null,
+                "ingredient9": null,
+                "ingredient10": null,
+                "ingredient11": null,
+                "ingredient12": null,
+                "ingredient13": null,
+                "ingredient14": null,
+                "ingredient15": null,
+                "measure1": "1 1/2 oz ",
+                "measure2": "1 oz ",
+                "measure3": "1 oz ",
+                "measure4": null,
+                "measure5": null,
+                "measure6": null,
+                "measure7": null,
+                "measure8": null,
+                "measure9": null,
+                "measure10": null,
+                "measure11": null,
+                "measure12": null,
+                "measure13": null,
+                "measure14": null,
+                "measure15": null,
+                "created_at": "2023-01-26T14:35:28.110Z",
+                "linked_user_id": 2
+            }
+        }
+    },
+    "GET /api/users/u/:username": {
+        "description": "serves the user object with the username matching that in the parametric endpoint",
+        "queries": [],
+        "parameters": ":username - must be a valid string matching an existing username",
+        "example URL input": "/api/users/u/bob2k23",
+        "exampleResponse": {
+            "user": [
+                {
+                    "user_id": 5,
+                    "username": "bob2k23",
+                    "password": "securepassword1",
+                    "avatar": "https://www.thecocktaildb.com/images/media/drink/uwryxx1483387873.jpg",
+                    "over18": true
+                }
+            ]
+        }
+    },
+    "GET /api/users/:user_id/cocktails": {
+        "description": "serves an array all cocktail objects associated with the user_id supplied in the parametric endpoint",
+        "queries": [],
+        "parameters": ":user_id - must be a number, matching an existing user_id",
+        "exampleUrlInput": "/api/users/2/cocktails",
+        "exampleResponse": {
+            "cocktails": [
+                {
+                    "cocktail_id": 23,
+                    "title": "Alexander",
+                    "category": "Ordinary Drink",
+                    "alcoholic": true,
+                    "glass": "Cocktail glass",
+                    "instructions": "Shake all ingredients with ice and strain contents into a cocktail glass. Sprinkle nutmeg on top and serve.",
+                    "thumbnail": "https://www.thecocktaildb.com/images/media/drink/0clus51606772388.jpg",
+                    "ingredient1": "Gin",
+                    "ingredient2": "Creme de Cacao",
+                    "ingredient3": "Light cream",
+                    "ingredient4": "Nutmeg",
+                    "ingredient5": null,
+                    "ingredient6": null,
+                    "ingredient7": null,
+                    "ingredient8": null,
+                    "ingredient9": null,
+                    "ingredient10": null,
+                    "ingredient11": null,
+                    "ingredient12": null,
+                    "ingredient13": null,
+                    "ingredient14": null,
+                    "ingredient15": null,
+                    "measure1": "1/2 oz ",
+                    "measure2": "1/2 oz white ",
+                    "measure3": "2 oz ",
+                    "measure4": null,
+                    "measure5": null,
+                    "measure6": null,
+                    "measure7": null,
+                    "measure8": null,
+                    "measure9": null,
+                    "measure10": null,
+                    "measure11": null,
+                    "measure12": null,
+                    "measure13": null,
+                    "measure14": null,
+                    "measure15": null,
+                    "created_at": "2023-01-26T14:35:28.110Z",
+                    "linked_user_id": 3
+                },
+                {
+                    "cocktail_id": 24,
+                    "title": "Algonquin",
+                    "category": "Ordinary Drink",
+                    "alcoholic": true,
+                    "glass": "Cocktail glass",
+                    "instructions": "Combine and shake all ingredients with ice, strain contents into a cocktail glass, and serve.",
+                    "thumbnail": "https://www.thecocktaildb.com/images/media/drink/uwryxx1483387873.jpg",
+                    "ingredient1": "Blended whiskey",
+                    "ingredient2": "Dry Vermouth",
+                    "ingredient3": "Pineapple juice",
+                    "ingredient4": null,
+                    "ingredient5": null,
+                    "ingredient6": null,
+                    "ingredient7": null,
+                    "ingredient8": null,
+                    "ingredient9": null,
+                    "ingredient10": null,
+                    "ingredient11": null,
+                    "ingredient12": null,
+                    "ingredient13": null,
+                    "ingredient14": null,
+                    "ingredient15": null,
+                    "measure1": "1 1/2 oz ",
+                    "measure2": "1 oz ",
+                    "measure3": "1 oz ",
+                    "measure4": null,
+                    "measure5": null,
+                    "measure6": null,
+                    "measure7": null,
+                    "measure8": null,
+                    "measure9": null,
+                    "measure10": null,
+                    "measure11": null,
+                    "measure12": null,
+                    "measure13": null,
+                    "measure14": null,
+                    "measure15": null,
+                    "created_at": "2023-01-26T14:35:28.110Z",
+                    "linked_user_id": 2
+                }
+            ]
+        }
+    },
+    "DELETE /api/cocktails/:cocktail_id": {
+        "description": "deletes a cocktail associated with a particular cocktail_id, providing it is valid",
+        "queries": [],
+        "parameters": ":cocktail_id - must be an integer matching an existing cocktail_id",
+        "exampleUrlInput": "/api/cocktails/2",
+        "exampleResponse": {}
+    },
+    "PATCH /api/users/i/:user_id": {
+        "description": "allows the user to optionally update 1 or more of the following user fields: password, avavtar, over18",
+        "queries": [],
+        "parameters": ":user_id - must be an integer matching an existing user_id",
+        "exampleUrlInput": "/api/users/i/2",
+        "exampleInputObject": {
+            "password": "newpassword1",
+            "avatar": "https://httpstatusdogs.com/img/100.jpg",
+            "over18": true
+        },
+        "exampleResponse": {
+            "user": {
+                "user_id": 2,
+                "username": "bob2k23",
+                "password": "newpassword1",
+                "avatar": "https://httpstatusdogs.com/img/100.jpg",
+                "over18": true
+            }
+        }
+    }
+}

@@ -1069,10 +1069,6 @@ describe('GET /api/users/:user_id', () => {
     })
 })
 
-
-
-
-
 describe('delete cocktail by cocktail_id', () => {
     test('delete cocktail by cocktail id returns 204', () => {
         return request(app)
@@ -1095,6 +1091,184 @@ describe('delete cocktail by cocktail_id', () => {
             .then(({ body: { message } }) => {
                 expect(message).toBe("cocktail_id does not exist in database")
 
+            })
+    })
+})
+
+describe('PATCH /api/users/:user_id', () => {
+    test('if user posts a new password, gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "password": "n3wp455w0rd",
+        }
+
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("n3wp455w0rd")
+                expect(user.avatar).toBe('https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953')
+                expect(user.over18).toBe(true)
+            })
+    })
+    test('if user posts a new password and/or avatar, gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "password": "n3wp455w0rd",
+            "avatar":"https://www.google.co.uk/dog.jpg"
+        }
+
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("n3wp455w0rd")
+                expect(user.avatar).toBe("https://www.google.co.uk/dog.jpg")
+                expect(user.over18).toBe(true)
+            })
+    })
+    test('if user posts a new avatar and/or over18, gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "avatar":"https://www.google.co.uk/dog.jpg",
+            "over18": false
+        }
+
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("pass123")
+                expect(user.avatar).toBe("https://www.google.co.uk/dog.jpg")
+                expect(user.over18).toBe(false)
+            })
+    })
+    test('if user posts a new avatar and/or over18 and/or password, gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "password": "n3wp455w0rd",
+            "avatar":"https://www.google.co.uk/dog.jpg",
+            "over18": false
+        }
+
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("n3wp455w0rd")
+                expect(user.avatar).toBe("https://www.google.co.uk/dog.jpg")
+                expect(user.over18).toBe(false)
+            })
+    })
+    test('if user posts a new avatar only gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "avatar":"https://www.google.co.uk/dog.jpg",
+        }
+
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("pass123")
+                expect(user.avatar).toBe("https://www.google.co.uk/dog.jpg")
+                expect(user.over18).toBe(true)
+            })
+    })
+    test('if user posts a new over18 only gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "over18": false
+        }
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("pass123")
+                expect(user.avatar).toBe('https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953')
+                expect(user.over18).toBe(false)
+            })
+    })
+    test('if user posts a new password and over18 gives 202, updates successfully, returning new user object', () => {
+        const userObject = {
+            "password": "n3wp455w0rd",
+            "over18": false
+        }
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(202)
+            .then(({ body: { user } }) => {
+                expect(user.user_id).toBe(1)
+                expect(user.password).toBe("n3wp455w0rd")
+                expect(user.avatar).toBe('https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953')
+                expect(user.over18).toBe(false)
+            })
+    })
+    test('if user posts an invalid password gives 400, returning meaningful message to user', () => {
+        const userObject = {
+            "password": true
+        }
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("password is not in correct format")
+            })
+    })
+    test('if user posts an invalid avatar gives 400, returning meaningful message to user', () => {
+        const userObject = {
+            "avatar": "www.google.co.uk"
+        }
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("avatar url is invalid")
+            })
+    })
+    test('if user posts an invalid over18 gives 400, returning meaningful message to user', () => {
+        const userObject = {
+            "over18": "true"
+        }
+        return request(app)
+            .patch('/api/users/i/1')
+            .send(userObject)
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("over18 is not in correct format")
+            })
+    })
+    test('if user_id is invalid gives 400, returning meaningful message to user', () => {
+        const userObject = {
+            password: "newpassword1"
+        }
+        return request(app)
+            .patch('/api/users/i/polo')
+            .send(userObject)
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("user_id is invalid")
+            })
+    })
+    test('if user_id is valid but not in database 404, returning meaningful message to user', () => {
+        const userObject = {
+            password: "newpassword1"
+        }
+        return request(app)
+            .patch('/api/users/i/25')
+            .send(userObject)
+            .expect(404)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("user_id not found in database")
             })
     })
 })

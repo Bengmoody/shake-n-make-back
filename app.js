@@ -1,6 +1,6 @@
 const express=require('express')
 const db = require('./db/index')
-const { removeCocktailByCocktailId, selectUserbyUserId, selectCocktailsByUserId, selectUsers,selectCocktails,addUser,addCocktail, selectUserByUsername} = require('./controllers')
+const {updateUserByUserId,removeCocktailByCocktailId, selectUserbyUserId, selectCocktailsByUserId, selectUsers,selectCocktails,addUser,addCocktail, selectUserByUsername, fetchJson} = require('./controllers')
 const app=express();
 
 app.use(express.json())
@@ -13,6 +13,9 @@ app.post('/api/users/:user_id/cocktails',addCocktail)
 app.get('/api/users/u/:username',selectUserByUsername)
 app.get('/api/users/:user_id/cocktails',selectCocktailsByUserId)
 app.delete('/api/cocktails/:cocktail_id', removeCocktailByCocktailId)
+app.patch('/api/users/i/:user_id', updateUserByUserId)
+app.get('/',fetchJson)
+
 
 
 app.use((err,req,res,next) => {
