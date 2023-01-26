@@ -962,7 +962,7 @@ describe('POST /api/cocktails', () => {
 describe('GET /api/users/:username', () => {
     test('valid username receive 200 and show user object', () => {
         return request(app)
-            .get('/api/users/testuser1')
+            .get('/api/users/u/testuser1')
             .expect(200)
             .then(({ body: { user } }) => {
                 expect(user).toEqual({
@@ -978,7 +978,7 @@ describe('GET /api/users/:username', () => {
     })
     test('testuser7 not found, return 404 error', () => {
         return request(app)
-            .get('/api/users/testuser7')
+            .get('/api/users/u/testuser7')
             .expect(404)
             .then(({ body: { message } }) => {
                 expect(message).toBe("username not found in database")
@@ -988,27 +988,84 @@ describe('GET /api/users/:username', () => {
 })
 
 
-describe('GET cocktails by user_id gives 200 status', () => {
+describe.only('GET cocktails by user_id gives 200 status', () => {
     test('valid user_id gives coctails related to id', () => {
         return request(app)
             .get('/api/users/1/cocktails')
             .expect(200)
             .then(({ body: { cocktails } }) => {
-               cocktails.forEach((cocktail) => {
-                expect(cocktail.linked_user_id).toBe(1)
-                expect(cocktail).toMatchObject({
-                    cocktail_id: expect.any(Number),
-                    linked_user_id: expect.any(Number),
-                    instructions: expect.any(String),
-                    alcoholic: expect.any(Boolean),
-                    title: expect.any(String),
-                    category: expect.any(String),
-                    ingredient1: expect.any(String),
-                    measure1: expect.any(String),
-                    created_at: expect.any(String),
+                cocktails.forEach((cocktail) => {
+                    expect(cocktail.linked_user_id).toBe(1)
+                    expect(cocktail).toMatchObject({
+                        cocktail_id: expect.any(Number),
+                        linked_user_id: expect.any(Number),
+                        instructions: expect.any(String),
+                        alcoholic: expect.any(Boolean),
+                        title: expect.any(String),
+                        category: expect.any(String),
+                        ingredient1: expect.any(String),
+                        measure1: expect.any(String),
+                        created_at: expect.any(String),
+                    })
                 })
-               })
             })
 
+    })
+    test('invalid userId when not a number 400 and meaningful message', () => {
+        return request(app)
+            .get('/api/users/asa/cocktails')
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("user_id is invalid")
+            })
+    })
+    test('user_id is valid but not in database, gives 404 error and meaningful message', () => {
+        return request(app)
+            .get('/api/users/10/cocktails')
+            .expect(404)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("user_id not found in database")
+            })
+    })
 })
+
+
+
+
+describe('GET /api/users/:user_id', () => {
+    test('valid username receive 200 and show user object', () => {
+        return request(app)
+            .get('/api/users/i/1')
+            .expect(200)
+            .then(({ body: { user } }) => {
+                expect(user).toEqual({
+                    "user_id": 1,
+                    "username": "testuser1",
+                    "password": "pass123",
+                    "avatar": 'https://vignette.wikia.nocookie.net/mrmen/images/d/d6/Mr-Tickle-9a.png/revision/latest?cb=20180127221953',
+                    "over18": true
+                }
+                )
+
+            })
+    })
+    test('user_id is invalid, gives 400 and meaningful message', () => {
+        return request(app)
+            .get('/api/users/i/POLO')
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("user_id is invalid")
+
+            })
+    })
+    test('user_id is valid, but not in database gives 404 and meaningful message', () => {
+        return request(app)
+            .get('/api/users/i/20')
+            .expect(404)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("user_id not found in database")
+
+            })
+    })
 })
+

@@ -1,4 +1,4 @@
-const { getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
+const { getUserByUserId, getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
 const { bodyTypeChecker, avatarChecker, usernameChecker, convertCocktail, cocktailBodyTypeChecker } = require("./utils")
 const selectUsers = (req, res, next) => {
     getUsers()
@@ -51,6 +51,18 @@ const addCocktail = (req, res, next) => {
         })
 }
 
+
+
+
+const selectUserbyUserId = (req, res, next) => {
+    const { user_id } = req.params
+    getUserByUserId(user_id).then((user) => {
+        res.status(200).send({ user })
+    }).catch((err) => {
+        next(err)
+    })
+}
+
 const selectUserByUsername = (req, res, next) => {
     const { username } = req.params
     getUserbyUsername(username).then((user) => {
@@ -62,11 +74,15 @@ const selectUserByUsername = (req, res, next) => {
 
 const selectCocktailsByUserId = (req, res, next) => {
     const { user_id } = req.params
-    getCocktailsByUserId(user_id).then((cocktails) =>{
-        res.status(200).send({cocktails})
-    }).catch((err) => {
-        next(err)
-    })
+    const promiseArr = []
+    promiseArr.push(getCocktailsByUserId(user_id))
+    promiseArr.push(getUserByUserId(user_id))
+    return Promise.all(promiseArr)
+        .then((results) => {
+            res.status(200).send({ cocktails:results[0] })
+        }).catch((err) => {
+            next(err)
+        })
 }
 
-module.exports = { selectCocktailsByUserId,  selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
+module.exports = { selectUserbyUserId, selectCocktailsByUserId, selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
