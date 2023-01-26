@@ -988,7 +988,7 @@ describe('GET /api/users/:username', () => {
 })
 
 
-describe.only('GET cocktails by user_id gives 200 status', () => {
+describe('GET cocktails by user_id gives 200 status', () => {
     test('valid user_id gives coctails related to id', () => {
         return request(app)
             .get('/api/users/1/cocktails')
