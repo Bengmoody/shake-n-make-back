@@ -987,3 +987,28 @@ describe('GET /api/users/:username', () => {
     })
 })
 
+
+describe('GET cocktails by user_id gives 200 status', () => {
+    test('valid user_id gives coctails related to id', () => {
+        return request(app)
+            .get('/api/users/1/cocktails')
+            .expect(200)
+            .then(({ body: { cocktails } }) => {
+               cocktails.forEach((cocktail) => {
+                expect(cocktail.linked_user_id).toBe(1)
+                expect(cocktail).toMatchObject({
+                    cocktail_id: expect.any(Number),
+                    linked_user_id: expect.any(Number),
+                    instructions: expect.any(String),
+                    alcoholic: expect.any(Boolean),
+                    title: expect.any(String),
+                    category: expect.any(String),
+                    ingredient1: expect.any(String),
+                    measure1: expect.any(String),
+                    created_at: expect.any(String),
+                })
+               })
+            })
+
+})
+})

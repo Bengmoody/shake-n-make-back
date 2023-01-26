@@ -47,3 +47,11 @@ exports.getUserbyUsername=(username) => {
         }
     })
 }
+
+exports.getCocktailsByUserId=(user_id) => {
+    return db.query(`SELECT * FROM cocktails
+    WHERE linked_user_id = $1;`, [user_id])
+    .then(({rows}) => {
+        return rows
+    })
+}
