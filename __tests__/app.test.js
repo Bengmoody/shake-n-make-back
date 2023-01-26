@@ -1069,3 +1069,33 @@ describe('GET /api/users/:user_id', () => {
     })
 })
 
+
+
+
+
+describe('delete cocktail by cocktail_id', () => {
+    test('delete cocktail by cocktail id returns 204', () => {
+        return request(app)
+            .delete('/api/cocktails/1')
+            .expect(204)
+    })
+    test('cocktail_id is invalid, gives 400 and meaningful message', () => {
+        return request(app)
+            .delete('/api/cocktails/polo')
+            .expect(400)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("cocktail_id is invalid")
+
+            })
+    })
+    test('cocktail_id is valid, but not in database gives 404 and meaningful message', () => {
+        return request(app)
+            .delete('/api/cocktails/200')
+            .expect(404)
+            .then(({ body: { message } }) => {
+                expect(message).toBe("cocktail_id does not exist in database")
+
+            })
+    })
+})
+
