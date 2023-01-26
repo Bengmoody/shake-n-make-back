@@ -1,5 +1,7 @@
-const { getUserByUserId, getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
+const { deleteCocktailByCocktailId, getUserByUserId, getCocktailsByUserId, getUserbyUsername, getUsers, getCocktails, postUser, postCocktail } = require("./models")
 const { bodyTypeChecker, avatarChecker, usernameChecker, convertCocktail, cocktailBodyTypeChecker } = require("./utils")
+
+
 const selectUsers = (req, res, next) => {
     getUsers()
         .then((users) => {
@@ -47,6 +49,7 @@ const addCocktail = (req, res, next) => {
             res.status(200).send({ cocktail })
         })
         .catch((err) => {
+            err.propName = 'user_id'
             next(err)
         })
 }
@@ -59,6 +62,7 @@ const selectUserbyUserId = (req, res, next) => {
     getUserByUserId(user_id).then((user) => {
         res.status(200).send({ user })
     }).catch((err) => {
+        err.propName = 'user_id'
         next(err)
     })
 }
@@ -81,8 +85,20 @@ const selectCocktailsByUserId = (req, res, next) => {
         .then((results) => {
             res.status(200).send({ cocktails:results[0] })
         }).catch((err) => {
+            err.propName = 'user_id'
             next(err)
         })
 }
 
-module.exports = { selectUserbyUserId, selectCocktailsByUserId, selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
+const removeCocktailByCocktailId = (req, res, next) => {
+    const { cocktail_id } = req.params
+    deleteCocktailByCocktailId(cocktail_id).then(() => {
+        res.status(204).send()
+    }).catch((err) => {
+        err.propName = 'cocktail_id'
+        next(err)
+    })
+
+}
+
+module.exports = { removeCocktailByCocktailId, selectUserbyUserId, selectCocktailsByUserId, selectUserByUsername, selectUsers, selectCocktails, addUser, addCocktail }
